@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #2F6B4F;
+  --color-bg: #FAF7F0;
+  --color-surface: #E4EDE6;
+  --color-text: #1F2A24;
+  --color-accent: #E0A83B;
+  --color-alert: #C4553D;
+}
+
+body {
+  background-color: #FAF7F0;
+  color: #1F2A24;
+  font-family: 'Inter', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+}
+
+/* Accessible focus ring */
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #2F6B4F;
+  outline-offset: 2px;
+}
+
+/* Simple Mode typography overrides */
+.simple-mode {
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.simple-mode h1 {
+  font-size: 2rem !important;
+}
+
+.simple-mode h2 {
+  font-size: 1.6rem !important;
+}
+
+.simple-mode button {
+  min-height: 54px !important;
+  font-size: 1.1rem !important;
+}
+
+/* Smooth fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}

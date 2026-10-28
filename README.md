@@ -67,3 +67,4 @@ npm start
 6. **Market Tab (20s)**: Show the 90-day price trend chart, the trend badge, and the "What to Grow Next" recommendation with the risk warning.
 7. **Sell Board (10s)**: Demonstrate posting produce and the instant click-to-call feature.
 8. **Close**: *"Existing apps answer one question each. KisanSaathi answers the farmer's whole season."*
+

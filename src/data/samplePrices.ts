@@ -1,4 +1,4 @@
-import { CropId, CropPriceData, PricePoint } from '../types';
+import { CropId, CropPriceData, PricePoint } from '../types/index';
 
 function generate90DayPrices(
   basePrice: number,
@@ -127,3 +127,4 @@ export function getWhatToGrowRecommendation() {
     },
   };
 }
+

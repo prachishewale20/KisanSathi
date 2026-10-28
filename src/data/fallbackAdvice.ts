@@ -1,4 +1,4 @@
-import { AdviceResult, FollowUpQuestion, Language, CropId } from '../types';
+import { AdviceResult, FollowUpQuestion, Language, CropId } from '../types/index';
 
 export interface SymptomRule {
   id: string;
@@ -599,3 +599,4 @@ export function findMatchingSymptomRule(text: string, crop?: CropId): SymptomRul
   // Default fallback: general fungal / blight
   return FALLBACK_SYMPTOM_RULES[FALLBACK_SYMPTOM_RULES.length - 1];
 }
+

@@ -1,4 +1,4 @@
-import { CropData } from '../types';
+import { CropData } from '../types/index';
 
 export const CROPS_DATA: Record<string, CropData> = {
   tomato: {
@@ -719,3 +719,4 @@ export const MAHARASHTRA_DISTRICTS = [
   'Washim',
   'Yavatmal',
 ];
+

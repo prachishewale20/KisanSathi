@@ -229,9 +229,14 @@ export default function CheckScreen() {
       {stage === 'input' && (
         <div className="space-y-4">
           <div className="bg-white rounded-card p-4 md:p-5 border border-[#D5E0D7] shadow-sm">
-            <label className="block text-sm font-semibold text-charcoal mb-2">
-              Describe the problem:
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-semibold text-charcoal">
+                Describe the problem:
+              </label>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sage text-forest border border-forest/20">
+                {t('demoExpertRuleBadge')}
+              </span>
+            </div>
             <div className="relative">
               <textarea
                 value={symptomText}
@@ -460,6 +465,21 @@ export default function CheckScreen() {
               <AlertOctagon className="w-3.5 h-3.5 text-amber-600 shrink-0" />
               <span>{t('expertNote')}</span>
             </div>
+
+            {/* Severe / Moderate Expert Warning Banner (Phase 2 Item 4) */}
+            {(plan?.healthSeverity === 'moderate' || plan?.healthSeverity === 'severe' || result.needsExpert) && (
+              <div className="mt-3 p-3 bg-clay/10 border-2 border-clay/30 rounded-xl text-xs text-clay font-medium flex items-start gap-2 shadow-xs">
+                <AlertOctagon className="w-4 h-4 text-clay shrink-0 mt-0.5" />
+                <div>
+                  <strong className="block font-bold mb-0.5">
+                    {t('expertConsultUrgent')}
+                  </strong>
+                  <span className="text-[11px] text-charcoal-muted">
+                    Do not rely solely on automated suggestions when symptoms spread across large patches. Always take a fresh physical plant sample to your nearest Krishi Vigyan Kendra (KVK).
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* CRITICAL FEATURE: Severity Selector that changes Health Factor (FR-CH6, UC4, Test T3) */}
@@ -536,3 +556,4 @@ export default function CheckScreen() {
     </div>
   );
 }
+

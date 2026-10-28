@@ -86,6 +86,19 @@ export default function EstimateScreen() {
         </div>
       </div>
 
+      {/* Mandatory Estimate Disclaimer Banner (Phase 2 Item 3) */}
+      <div className="p-3 bg-amber-50 border-2 border-amber/50 rounded-xl text-xs text-charcoal flex items-start gap-2 shadow-xs">
+        <AlertCircle className="w-4 h-4 text-amber-dark shrink-0 mt-0.5" />
+        <div>
+          <span className="font-bold text-charcoal block">
+            {t('notGuaranteedNotice')}
+          </span>
+          <span className="text-[11px] text-charcoal-muted mt-0.5 block">
+            Regional starter yield benchmarks: Tomato (80 Q/ac), Onion (80 Q/ac), Soybean (4 Q/ac). Multiplied by health factor: Healthy (1.00), Minor (0.90), Moderate (0.75), Severe (0.50).
+          </span>
+        </div>
+      </div>
+
       {/* Primary Key Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Yield Estimate Card */}
@@ -270,3 +283,4 @@ export default function EstimateScreen() {
     </div>
   );
 }
+

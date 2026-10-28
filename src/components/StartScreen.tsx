@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { CROPS_DATA, MAHARASHTRA_DISTRICTS } from '../data/crops';
-import { CropId, Language } from '../types';
-import { Calendar, MapPin, Sparkles, CheckCircle2 } from 'lucide-react';
+import { CropId, Language, HealthSeverity } from '../types';
+import { Calendar, MapPin, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 export default function StartScreen() {
   const { plan, savePlan, language, setLanguage, t } = useApp();
@@ -24,6 +24,9 @@ export default function StartScreen() {
   const [areaAcres, setAreaAcres] = useState<number>(plan?.areaAcres || 2);
   const [district, setDistrict] = useState<string>(plan?.district || 'Nashik');
   const [village, setVillage] = useState<string>(plan?.village || 'Ozar');
+  const [healthSeverity, setHealthSeverity] = useState<HealthSeverity>(
+    plan?.healthSeverity || 'none'
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +37,7 @@ export default function StartScreen() {
       district,
       village,
       language,
+      healthSeverity,
     });
   };
 
@@ -45,6 +49,7 @@ export default function StartScreen() {
     setAreaAcres(2);
     setDistrict('Nashik');
     setVillage('Dindori');
+    setHealthSeverity('none');
     savePlan({
       crop: 'tomato',
       sowingDate: demoDate,
@@ -281,6 +286,49 @@ export default function StartScreen() {
           </div>
         </div>
 
+        {/* 6. Crop Health Condition */}
+        <div>
+          <label className="block text-sm font-semibold text-charcoal mb-1 flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-forest" />
+            <span>6. {t('cropHealthLabel')}</span>
+          </label>
+          <p className="text-xs text-charcoal-muted mb-2.5">
+            {t('cropHealthHelp')}
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { id: 'none', label: t('severityNone'), factor: '1.00', desc: 'No damage' },
+              { id: 'minor', label: t('severityMinor'), factor: '0.90', desc: '-10% yield' },
+              { id: 'moderate', label: t('severityModerate'), factor: '0.75', desc: '-25% yield' },
+              { id: 'severe', label: t('severitySevere'), factor: '0.50', desc: '-50% yield' },
+            ].map((item) => {
+              const isSelected = healthSeverity === item.id;
+              return (
+                <button
+                  type="button"
+                  key={item.id}
+                  onClick={() => setHealthSeverity(item.id as HealthSeverity)}
+                  className={`min-h-[50px] p-2 rounded-xl border text-center transition-all ${
+                    isSelected
+                      ? 'bg-forest text-white border-forest font-bold shadow-sm'
+                      : 'bg-white text-charcoal border-[#D5E0D7] hover:border-forest/50'
+                  }`}
+                >
+                  <div className="text-xs font-semibold">{item.label}</div>
+                  <div
+                    className={`text-[10px] mt-0.5 ${
+                      isSelected ? 'text-amber' : 'text-charcoal-muted'
+                    }`}
+                  >
+                    {item.desc}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Submit Button */}
         <div className="pt-2">
           <button
@@ -295,3 +343,4 @@ export default function StartScreen() {
     </div>
   );
 }
+

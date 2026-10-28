@@ -1,4 +1,4 @@
-import { Language } from '../types';
+import { Language } from '../types/index';
 
 export const TRANSLATIONS: Record<Language, Record<string, string>> = {
   en: {
@@ -31,6 +31,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     landAreaLabel: 'Land Area (in Acres)',
     districtLabel: 'District (Maharashtra)',
     villageLabel: 'Village / Taluka (Optional)',
+    cropHealthLabel: 'Initial Crop Health Condition',
+    cropHealthHelp: 'Select crop condition at the start of your plan:',
     btnStartPlan: 'View My Season Plan',
     btnUpdatePlan: 'Update My Plan',
     setupQuickDemo: 'Try 1-Click Demo (Tomato, 40 days, 2 acres, Nashik)',
@@ -139,6 +141,13 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     callSeller: 'Call Farmer',
     copyPhone: 'Copy Phone',
     phoneCopied: 'Phone number copied to clipboard!',
+    deleteListing: 'Delete',
+    deleteConfirm: 'Are you sure you want to delete this listing?',
+    listingDeleted: 'Listing removed successfully.',
+    demoDataNoticeFull: 'DEMO DATA — 3-Month Mandi Trend (Not Live Prices)',
+    demoExpertRuleBadge: 'DEMO EXPERT RULE: Verified Agricultural Knowledge Pattern',
+    notGuaranteedNotice: 'Notice: Mathematical projection based on regional baseline. This is an advisory estimate, NOT a guaranteed yield or profit.',
+    expertConsultUrgent: 'Urgent: Symptoms indicate significant crop risk. Immediate on-field consultation with a Taluka Agriculture Officer or KVK expert is strongly recommended.',
     sellDisclaimer: 'KisanSaathi is an open public discovery board to connect farmers directly with buyers. We do not handle payments, quality testing, or transportation.',
     comingSoonFeatures: 'Coming Soon in Version 2.0: Escrow Digital Payments, In-app Chat, Buyer Verification, and Truck Pooling.',
 
@@ -185,6 +194,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     landAreaLabel: 'खेत का रकबा (एकड़ में)',
     districtLabel: 'जिला (महाराष्ट्र)',
     villageLabel: 'गांव / तहसील (वैकल्पिक)',
+    cropHealthLabel: 'फसल की मौजूदा स्वास्थ्य स्थिति',
+    cropHealthHelp: 'योजना शुरू करते समय फसल की स्थिति चुनें:',
     btnStartPlan: 'मेरी फसल योजना देखें',
     btnUpdatePlan: 'योजना में बदलाव करें',
     setupQuickDemo: '1-क्लिक डेमो (टमाटर, 40 दिन, 2 एकड़, नासिक)',
@@ -293,6 +304,13 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     callSeller: 'किसान को कॉल करें',
     copyPhone: 'नंबर कॉपी करें',
     phoneCopied: 'मोबाइल नंबर कॉपी हो गया!',
+    deleteListing: 'हटाएं',
+    deleteConfirm: 'क्या आप इस लिस्टिंग को हटाना चाहते हैं?',
+    listingDeleted: 'लिस्टिंग हटा दी गई है।',
+    demoDataNoticeFull: 'डेमो डेटा — 3 महीने का मंडी रुझान (लाइव भाव नहीं)',
+    demoExpertRuleBadge: 'डेमो विशेषज्ञ नियम: सत्यापित कृषि ज्ञान पैटर्न',
+    notGuaranteedNotice: 'सूचना: क्षेत्रीय औसत पर आधारित गणितीय अनुमान। यह अनुमान है, कोई गारंटीशुदा उपज या लाभ नहीं।',
+    expertConsultUrgent: 'अति आवश्यक: यह लक्षण गंभीर फसल जोखिम का संकेत हैं। तुरंत तालुका कृषि अधिकारी या KVK विशेषज्ञ से खेत का मुआयना कराएं।',
     sellDisclaimer: 'किसान साथी किसानों को खरीदारों से जोड़ने का एक खुला मंच है। हम भुगतान, माल की जांच या ढुलाई की जिम्मेदारी नहीं लेते।',
     comingSoonFeatures: 'वर्जन 2.0 में आ रहा है: डिजिटल एस्क्रो भुगतान, इन-ऐप चैट, व्यापारी सत्यापन और सामूहिक वाहन बुकिंग।',
 
@@ -339,6 +357,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     landAreaLabel: 'शेताचे क्षेत्र (एकरमध्ये)',
     districtLabel: 'जिल्हा (महाराष्ट्र)',
     villageLabel: 'गाव / तालुका (ऐच्छिक)',
+    cropHealthLabel: 'पिकाची सद्य आरोग्य स्थिती',
+    cropHealthHelp: 'योजना सुरू करताना पिकाची स्थिती निवडा:',
     btnStartPlan: 'माझे पीक वेळापत्रक पाहा',
     btnUpdatePlan: 'योजना बदला',
     setupQuickDemo: '१-क्लिक डेमो (टोमॅटो, ४० दिवस, २ एकर, नाशिक)',
@@ -447,6 +467,13 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     callSeller: 'शेतकऱ्याला कॉल करा',
     copyPhone: 'नंबर कॉपी करा',
     phoneCopied: 'मोबाईल नंबर क्लिपबोर्डवर कॉपी झाला!',
+    deleteListing: 'हटवा',
+    deleteConfirm: 'तुम्हाला ही नोंदणी खरोखर हटवायची आहे का?',
+    listingDeleted: 'नोंदणी यशस्वीरीत्या हटवली गेली.',
+    demoDataNoticeFull: 'डेमो माहिती — ३ महिन्यांचा बाजारभाव कल (थेट दर नाहीत)',
+    demoExpertRuleBadge: 'डेमो तज्ज्ञ नियम: तपासलेली कृषी माहिती पद्धती',
+    notGuaranteedNotice: 'सूचना: प्रादेशिक सरासरीवर आधारित गणिती अंदाज. हा केवळ अंदाज आहे, निश्चित उत्पादन किंवा नफ्याची हमी नाही.',
+    expertConsultUrgent: 'तातडीचे: ही लक्षणे पिकासाठी गंभीर धोक्याची आहेत. त्वरित तालुका कृषी अधिकारी किंवा KVK शास्त्रज्ञांकडून प्रत्यक्ष पाहणी करून घ्या.',
     sellDisclaimer: 'किसान साथी हे शेतकरी आणि खरेदीदार यांना जोडणारे एक खुले व्यासपीठ आहे. आम्ही पैसे देवाणघेवाण, प्रतवारी किंवा वाहतुकीची जबाबदारी घेत नाही.',
     comingSoonFeatures: 'आवृत्ती २.० मध्ये येत आहे: सुरक्षित डिजिटल पेमेंट्स, इन-ॲप चॅट, व्यापारी पडताळणी आणि सामायिक वाहतूक बुकिंग.',
 
@@ -463,3 +490,4 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     aboutText: 'अॅग्रीकल्चर आणि रुरल सोल्युशन्ससाठी विकसित. Next.js, Tailwind CSS, Open-Meteo आणि स्थानिक कृषी ज्ञानावर आधारित.',
   },
 };
+

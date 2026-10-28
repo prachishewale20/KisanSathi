@@ -132,3 +132,4 @@ export interface SellListing {
   phone: string;
   createdAt: string;
 }
+

@@ -57,7 +57,7 @@ export default function MarketScreen() {
     <div className="flex-1 p-4 md:p-6 max-w-3xl mx-auto w-full animate-fade-in pb-24 space-y-5">
       {/* Top Banner */}
       <div className="bg-sage/70 rounded-card p-4 border border-forest/15">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-forest text-white">
               <LineChartIcon className="w-5 h-5 text-amber" />
@@ -72,8 +72,16 @@ export default function MarketScreen() {
             </div>
           </div>
 
-          <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-cream border border-[#D5E0D7] text-charcoal-muted">
-            {t('sampleDataNotice')}
+          <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-amber text-charcoal shadow-xs">
+            {t('demoDataNoticeFull')}
+          </span>
+        </div>
+
+        {/* Clear Notice: Not Live Prices */}
+        <div className="mt-3 p-2 bg-amber-50 rounded-lg border border-amber/30 text-[11px] text-charcoal-muted flex items-center gap-2">
+          <AlertTriangle className="w-3.5 h-3.5 text-amber-dark shrink-0" />
+          <span>
+            Notice: These 90-day wholesale trends are pre-compiled demonstration data calibrated for Maharashtra mandis. This MVP does not connect to unverified live price feeds.
           </span>
         </div>
       </div>
@@ -309,3 +317,4 @@ export default function MarketScreen() {
     </div>
   );
 }
+

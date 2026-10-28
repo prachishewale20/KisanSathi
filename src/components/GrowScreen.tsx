@@ -33,10 +33,11 @@ export default function GrowScreen() {
   }
 
   const crop = CROPS_DATA[plan.crop] || CROPS_DATA.tomato;
-  const sowingDateObj = new Date(plan.sowingDate);
+  const rawDate = new Date(plan.sowingDate);
+  const sowingDateObj = isNaN(rawDate.getTime()) ? new Date() : rawDate;
   const now = new Date();
   
-  // Calculate elapsed days
+  // Calculate elapsed days safely
   const diffTime = now.getTime() - sowingDateObj.getTime();
   const elapsedDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
   const totalDays = crop.seasonLengthDays;
@@ -306,3 +307,4 @@ export default function GrowScreen() {
     </div>
   );
 }
+

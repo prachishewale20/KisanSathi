@@ -16,17 +16,65 @@ import {
   Clock,
   Sparkles,
   ShieldAlert,
-  X
+  X,
+  Trash2
 } from 'lucide-react';
+
+const LISTINGS_STORAGE_KEY = 'kisansaathi_listings_v1';
+
+// Seed demo listings to ensure initial marketplace presence
+const INITIAL_DEMO_LISTINGS: SellListing[] = [
+  {
+    id: 'list-1',
+    crop: 'tomato',
+    quantityQuintals: 45,
+    askingPricePerQuintal: 1950,
+    village: 'Ozar Mig',
+    district: 'Nashik',
+    phone: '9822014589',
+    createdAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+  },
+  {
+    id: 'list-2',
+    crop: 'onion',
+    quantityQuintals: 120,
+    askingPricePerQuintal: 2350,
+    village: 'Lasalgaon',
+    district: 'Nashik',
+    phone: '9423187652',
+    createdAt: new Date(Date.now() - 1000 * 60 * 180).toISOString(),
+  },
+  {
+    id: 'list-3',
+    crop: 'soybean',
+    quantityQuintals: 60,
+    askingPricePerQuintal: 4700,
+    village: 'Ausa',
+    district: 'Latur',
+    phone: '9765432109',
+    createdAt: new Date(Date.now() - 1000 * 60 * 360).toISOString(),
+  },
+  {
+    id: 'list-4',
+    crop: 'tomato',
+    quantityQuintals: 80,
+    askingPricePerQuintal: 1850,
+    village: 'Manchar',
+    district: 'Pune',
+    phone: '9158765432',
+    createdAt: new Date(Date.now() - 1000 * 60 * 720).toISOString(),
+  },
+];
 
 export default function SellScreen() {
   const { plan, language, t } = useApp();
 
-  const [listings, setListings] = useState<SellListing[]>([]);
+  const [allListings, setAllListings] = useState<SellListing[]>([]);
   const [filterCrop, setFilterCrop] = useState<string>('all');
   const [filterDistrict, setFilterDistrict] = useState<string>('all');
   const [showPostModal, setShowPostModal] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   // Form State
   const [formCrop, setFormCrop] = useState<CropId>(plan?.crop || 'tomato');
@@ -38,23 +86,34 @@ export default function SellScreen() {
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch listings on mount or filter change
-  const fetchListings = async () => {
+  // Load listings from localStorage on mount (Phase 2 Item 8)
+  useEffect(() => {
     try {
-      const url = `/api/listings?crop=${filterCrop}&district=${filterDistrict}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        setListings(data.listings || []);
+      const stored = localStorage.getItem(LISTINGS_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setAllListings(parsed);
+          return;
+        }
       }
-    } catch (err) {
-      console.warn('Failed to load listings', err);
+      // If not stored, initialize with default demo listings
+      setAllListings(INITIAL_DEMO_LISTINGS);
+      localStorage.setItem(LISTINGS_STORAGE_KEY, JSON.stringify(INITIAL_DEMO_LISTINGS));
+    } catch (e) {
+      console.warn('Failed to load listings from localStorage', e);
+      setAllListings(INITIAL_DEMO_LISTINGS);
+    }
+  }, []);
+
+  const saveListings = (updated: SellListing[]) => {
+    setAllListings(updated);
+    try {
+      localStorage.setItem(LISTINGS_STORAGE_KEY, JSON.stringify(updated));
+    } catch (e) {
+      console.warn('Failed to save listings to localStorage', e);
     }
   };
-
-  useEffect(() => {
-    fetchListings();
-  }, [filterCrop, filterDistrict]);
 
   const handlePostListing = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,38 +144,52 @@ export default function SellScreen() {
     }
 
     setIsSubmitting(true);
+    const newListing: SellListing = {
+      id: `list-${Date.now()}`,
+      crop: formCrop,
+      quantityQuintals: qty,
+      askingPricePerQuintal: price,
+      village: formVillage.trim(),
+      district: formDistrict.trim(),
+      phone: cleanPhone,
+      createdAt: new Date().toISOString(),
+    };
+
     try {
-      const res = await fetch('/api/listings', {
+      // Save to localStorage immediately (FR-SL2, local persistence)
+      const updated = [newListing, ...allListings];
+      saveListings(updated);
+
+      // Also notify backend API
+      fetch('/api/listings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          crop: formCrop,
-          quantityQuintals: qty,
-          askingPricePerQuintal: price,
-          village: formVillage.trim(),
-          district: formDistrict.trim(),
-          phone: cleanPhone,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setFormError(data.error || 'Failed to submit listing');
-        return;
-      }
-
-      // Prepend newly submitted listing to state immediately (FR-SL2, Test Case T8)
-      if (data.listing) {
-        setListings((prev) => [data.listing, ...prev]);
-      }
+        body: JSON.stringify(newListing),
+      }).catch((err) => console.warn('Backend sync failed, stored locally', err));
 
       setShowPostModal(false);
       setFormPhone('');
+      setFeedbackMessage('Listing published successfully!');
+      setTimeout(() => setFeedbackMessage(null), 3000);
     } catch (err) {
-      setFormError('Network error while posting listing.');
+      setFormError('Error saving listing.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteListing = (id: string) => {
+    if (window.confirm(t('deleteConfirm'))) {
+      const updated = allListings.filter((item) => item.id !== id);
+      saveListings(updated);
+
+      // Also trigger API delete
+      fetch(`/api/listings?id=${id}`, { method: 'DELETE' }).catch((err) =>
+        console.warn('API delete failed', err)
+      );
+
+      setFeedbackMessage(t('listingDeleted'));
+      setTimeout(() => setFeedbackMessage(null), 3000);
     }
   };
 
@@ -127,6 +200,17 @@ export default function SellScreen() {
       setTimeout(() => setCopiedId(null), 2000);
     }
   };
+
+  // Filter listings based on current filter state
+  const displayedListings = allListings.filter((item) => {
+    if (filterCrop !== 'all' && item.crop !== filterCrop) return false;
+    if (
+      filterDistrict !== 'all' &&
+      item.district.toLowerCase() !== filterDistrict.toLowerCase()
+    )
+      return false;
+    return true;
+  });
 
   return (
     <div className="flex-1 p-4 md:p-6 max-w-3xl mx-auto w-full animate-fade-in pb-24 space-y-5">
@@ -199,9 +283,22 @@ export default function SellScreen() {
         </div>
       </div>
 
-      {/* Listings Board (FR-SL2) */}
+      {/* Action feedback toast */}
+      {feedbackMessage && (
+        <div className="p-3 bg-forest text-white text-xs font-semibold rounded-xl shadow-md flex items-center justify-between animate-fade-in">
+          <span>{feedbackMessage}</span>
+          <button
+            onClick={() => setFeedbackMessage(null)}
+            className="text-amber hover:text-white ml-2 font-bold"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Listings Board (FR-SL2, Phase 2 Item 6) */}
       <div className="space-y-3">
-        {listings.length === 0 ? (
+        {displayedListings.length === 0 ? (
           <div className="bg-white rounded-card p-8 text-center border border-[#D5E0D7]">
             <ShoppingBag className="w-8 h-8 text-charcoal-light mx-auto mb-2" />
             <p className="text-sm font-semibold text-charcoal mb-3">
@@ -215,7 +312,7 @@ export default function SellScreen() {
             </button>
           </div>
         ) : (
-          listings.map((item) => {
+          displayedListings.map((item) => {
             const cropInfo = CROPS_DATA[item.crop] || CROPS_DATA.tomato;
             const emoji = item.crop === 'tomato' ? '🍅' : item.crop === 'onion' ? '🧅' : '🌱';
             const isJustCopied = copiedId === item.id;
@@ -291,6 +388,15 @@ export default function SellScreen() {
                       ) : (
                         <Copy className="w-4 h-4" />
                       )}
+                    </button>
+
+                    {/* Delete Listing Button (Phase 2 Item 6) */}
+                    <button
+                      onClick={() => handleDeleteListing(item.id)}
+                      className="min-h-[42px] p-2 bg-clay/10 hover:bg-clay/20 text-clay rounded-lg text-xs font-semibold transition-all border border-clay/30"
+                      title={t('deleteListing')}
+                    >
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -461,3 +567,4 @@ export default function SellScreen() {
     </div>
   );
 }
+

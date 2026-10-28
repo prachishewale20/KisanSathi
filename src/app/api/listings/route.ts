@@ -153,3 +153,34 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Listing ID is required for deletion' },
+        { status: 400 }
+      );
+    }
+
+    const prevCount = listingsStore.length;
+    listingsStore = listingsStore.filter((item) => item.id !== id);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Listing deleted successfully',
+      deleted: listingsStore.length < prevCount,
+      remainingTotal: listingsStore.length,
+    });
+  } catch (error) {
+    console.error('Error deleting listing:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete listing' },
+      { status: 500 }
+    );
+  }
+}
+
